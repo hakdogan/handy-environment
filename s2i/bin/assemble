@@ -1,0 +1,15 @@
+#!/bin/bash -e
+
+set -e
+
+echo "---> Installing application source..."
+cp -Rf /tmp/src/. ./
+
+FILE=pom.xml
+
+if [ -f $FILE ]; then
+   echo "Maven build detected"
+   mvn clean install -Dmaven.repo.local=/tmp/artifacts/m2 -DskipTests -Dfabric8.skip=true -Djava.net.preferIPv4Stack=true
+   echo "---> Moving the file to the application directory..."
+   mv ./target/*.jar ./
+fi
