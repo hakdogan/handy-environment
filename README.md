@@ -1,28 +1,31 @@
 # JDK Provider for Java Applications Under the OpenShift - S2I Builder Image
   
 
-`Source-To-Image` (S2I) is a standalone tool for creating builder images. It's also the major strategy used for building applications in `OpenShift 3`. This repository contains sample builder image for _Java applications_ to be used with `source-to-image` in `OpenShift`. The image to be built expects a regular executable jar file that comes from a repository as input. The input can be a `maven` project.
+`Source-To-Image` (S2I) is a standalone tool for creating builder images. It's also the major strategy used for building applications in `OpenShift 3`. This repository contains the source code for building _Java applications_ with various JDK versions as a reproducible image using `source-to-image`. The image to be built expects a regular executable jar file that comes from a repository as input. The input can be a `maven` project.
 
-# To build image
+
+## To build image
 ```
 oc new-build https://github.com/hakdogan/handy-environment.git --name kodcu-jdk
 ```
 
-You can use the environment variable for JDK version you want. For example, if you want to use Open JDK 7, you should be used following command.
+
+## Available environment variables.
+You can use the `JDK` environment variable for JDK version you want. For example, if you want to use Open JDK 7, you should be used following command.
 
 ```
 oc new-build https://github.com/hakdogan/handy-environment.git --env JDK=openjdk7 --name kodcu-jdk
 ```
 
-Supported JDK versions as follows.
+You don't have to use the `JDK` variable. When you don't use the `JDK` variable or use a different value than the following, Oracle JDK 8 will install by default.
 
-JDK | ENV | 
+ENV | MEANING | 
 --- | --- | 
-OpenJDK 6 | --env JDK=openjdk6 | 
-OpenJDK 7 | --env JDK=openjdk7 | 
-Oracle JDK 6 | --env JDK=oraclejdk6 |
-Oracle JDK 7 | --env JDK=oraclejdk7 |
-Oracle JDK 8 | --env JDK=oraclejdk8 |
+`--env JDK=openjdk6` |  | 
+`--env JDK=openjdk7` | 7 version of OpenJDK will be installed | 
+`--env JDK=oraclejdk6` | 6 version of Oracle JDK will be installed |
+`--env JDK=oraclejdk7` | 7 version of Oracle JDK will be installed |
+`--env JDK=oraclejdk8` | 8 version of Oracle JDK will be installed |
 
 
 ## To deployment
