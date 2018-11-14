@@ -21,7 +21,7 @@ You don't have to use the `JDK` variable. When you don't use the `JDK` variable 
 
 ENV | MEANING | 
 --- | --- | 
-`--env JDK=openjdk6` |  | 
+`--env JDK=openjdk6` | 6 version of OpenJDK will be installed | 
 `--env JDK=openjdk7` | 7 version of OpenJDK will be installed | 
 `--env JDK=oraclejdk6` | 6 version of Oracle JDK will be installed |
 `--env JDK=oraclejdk7` | 7 version of Oracle JDK will be installed |
