@@ -10,7 +10,7 @@ oc new-build https://github.com/hakdogan/handy-environment.git --name kodcu-jdk
 ```
 
 
-## Available environment variables.
+## Available environment variables
 You can use the `JDK` environment variable for JDK version you want. For example, if you want to use Open JDK 7, you should be used following command.
 
 ```
