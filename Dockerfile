@@ -11,7 +11,7 @@ LABEL maintainer="Huseyin Akdogan <hakdogan@kodcu.com>" \
       io.openshift.tags="builder,java" \
       io.openshift.s2i.scripts-url="image:///home/s2i/bin"
 
-COPY install.sh "$APPDIR/"
+COPY jdkinstaller.sh "$APPDIR/"
 COPY s2i $S2IDIR
 RUN chmod 777 -R $S2IDIR
 
@@ -20,17 +20,24 @@ RUN useradd $USER \
     && addgroup $USER $USER \
     && chmod 777 -R $APPDIR
 
-WORKDIR $APPDIR
-
-EXPOSE 8080
-
 RUN apt-get update -y && \
     apt-get install -y software-properties-common
 
-RUN ["/bin/bash", "-c", "$APPDIR/install.sh"]
+RUN ["/bin/bash", "-c", "$APPDIR/jdkinstaller.sh"]
 
 RUN apt-get install maven -y && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y unzip && \
+    wget https://services.gradle.org/distributions/gradle-4.10.2-bin.zip && \
+    mkdir /opt/gradle && \
+    unzip -d /opt/gradle gradle-4.10.2-bin.zip && \
+    ls /opt/gradle/gradle-4.10.2
+
+ENV PATH=$PATH:/opt/gradle/gradle-4.10.2/bin
+RUN rm -rf /var/lib/apt/lists/*
+
+WORKDIR $APPDIR
+
+EXPOSE 8080
 
 USER $USER
 

@@ -5,11 +5,17 @@ set -e
 echo "---> Installing application source..."
 cp -Rf /tmp/src/. ./
 
-FILE=pom.xml
+pomfile=pom.xml
+gradlefile=build.gradle
 
-if [ -f $FILE ]; then
-   echo "Maven build detected"
+if [ -f $pomfile ]; then
+   echo "---> Maven build detected..."
    mvn clean install -Dmaven.repo.local=/tmp/artifacts/m2 -DskipTests -Dfabric8.skip=true -Djava.net.preferIPv4Stack=true
-   echo "---> Moving the file to the application directory..."
+   echo "---> Moving the jar file(s) to the application directory..."
    mv ./target/*.jar ./
+elif [ -f $gradlefile ]; then
+    echo "---> Gradle build detected..."
+    gradle build
+    echo "---> Moving the jar file(s) to the application directory..."
+    mv ./build/libs/*.jar ./
 fi
