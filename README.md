@@ -64,7 +64,7 @@ jar:
 
 ## To Deployment
 ```
-oc new-app jdk-container~$REPO_URL
+oc new-app jdk-container~$repo_url_or_path
 ```
 
 

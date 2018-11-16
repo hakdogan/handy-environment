@@ -6,9 +6,9 @@ ARG APPDIR="/deployments"
 
 LABEL maintainer="Huseyin Akdogan <hakdogan@kodcu.com>" \
       io.k8s.description="S2I builder for Java Applications." \
-      io.k8s.display-name="KODCU JDK Provider" \
+      io.k8s.display-name="Handy Environment" \
       io.openshift.expose-services="8080:http" \
-      io.openshift.tags="builder,java" \
+      io.openshift.tags="builder,java,maven,gradle" \
       io.openshift.s2i.scripts-url="image:///home/s2i/bin"
 
 COPY jdkinstaller.sh "$APPDIR/"
