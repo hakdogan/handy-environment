@@ -3,11 +3,17 @@
 echo "---> Installing JDK...";
 
 if [ "$jdk" == "openjdk6" ]; \
-        then apt-get update && \
-             apt-get install -y openjdk-6-jdk;
+        then apt-get install -y openjdk-6-jdk;
     elif [ "$jdk" == "openjdk7" ]; \
-        then apt-get update && \
-             apt-get install -y openjdk-7-jdk;
+        then apt-get install -y openjdk-7-jdk;
+    elif [ "$jdk" == "openjdk8" ]; \
+        then apt-get install -y openjdk-8-jdk;
+    elif [ "$jdk" == "openjdk9" ]; \
+        then apt-get install -y openjdk-9-jdk;
+    elif [ "$jdk" == "openjdk10" ]; \
+        then apt-get install -y openjdk-10-jdk;
+    elif [ "$jdk" == "openjdk11" ]; \
+        then apt-get install -y openjdk-11-jdk;
     elif [ "$jdk" == "oraclejdk6" ]; \
         then echo oracle-java6-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
             add-apt-repository -y ppa:webupd8team/java && \

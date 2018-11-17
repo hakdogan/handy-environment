@@ -1,30 +1,27 @@
 #!/bin/bash -e
 
-parse_yaml() {
-   local prefix=$2
-   local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
-   sed -ne "s|^\($s\)\($w\)$s:$s\"\(.*\)\"$s\$|\1$fs\2$fs\3|p" \
-        -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
-   awk -F$fs '{
-      indent = length($1)/2;
-      vname[indent] = $2;
-      for (i in vname) {if (i > indent) {delete vname[i]}}
-      if (length($3) > 0) {
-         vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
-         printf("%s%s%s=\"%s\"\n", "'$prefix'",vn, $2, $3);
-      }
-   }'
-}
-# https://gist.github.com/pkuczynski/8665367
+set -e
+
+. parse_yaml.sh
 
 if [ -z "$sfpath" ];
     then
-        name="*.jar"
+        jarName="*.jar"
     else
         eval $(parse_yaml $sfpath/setting.yml "root_")
-        name=$root_jar_name
-        arguments=${root_jar_arguments//['[',']']/''}
-        if [ -z "$name" ]; then name="*.jar"; fi
+        jarName=$root_project_jarName
+        arguments=${root_project_arguments//['[',']']/''}
+        outputDirectory=$root_project_outputDirectory
+        execCommandWorkDir=$root_project_execCommandWorkDir
+        execCommand=$root_project_execCommand
+        if [ -z "$jarName" ]; then jarName="*.jar"; fi
 fi
 
-java -jar $name $arguments
+if [ ! -z "$outputDirectory" ]; then cd $outputDirectory; fi
+
+if [ ! -z "$execCommand" ]; then
+    if [ ! -z "$execCommandWorkDir" ]; then cd $execCommandWorkDir; fi
+    exec $execCommand
+else
+    java -jar $jarName $arguments
+fi

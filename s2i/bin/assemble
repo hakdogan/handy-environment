@@ -5,18 +5,32 @@ set -e
 echo "---> Installing application source..."
 cp -Rf /tmp/src/. ./
 
+. parse_yaml.sh
+if [ ! -z "$sfpath" ]; then
+        eval $(parse_yaml $sfpath/setting.yml "root_")
+        buildFileDirectory=$root_project_buildFileDirectory
+        execCommand=$root_project_execCommand
+        if [ ! -z "$buildFileDirectory" ]; then cd $buildFileDirectory; fi
+fi
+
 pomfile=pom.xml
 gradlefile=build.gradle
 message="---> Moving the jar file(s) to the main application directory..."
 
 if [ -f $pomfile ]; then
    echo "---> Maven build detected..."
-   mvn clean install -Dmaven.repo.local=/tmp/artifacts/m2 -DskipTests -Dfabric8.skip=true -Djava.net.preferIPv4Stack=true
-   echo $message
-   mv ./target/*.jar ./
+   mvn clean install  -Dmaven.repo.local=/tmp/artifacts/m2 -DskipTests -Dfabric8.skip=true -Djava.net.preferIPv4Stack=true
+   if [ -z "$execCommand" ];
+       then
+            echo $message
+            mv ./target/*.jar ./
+   fi
 elif [ -f $gradlefile ]; then
     echo "---> Gradle build detected..."
     gradle build
-    echo message
-    mv ./build/libs/*.jar ./
+    if [ -z "$execCommand" ];
+        then
+            echo message
+            mv ./build/libs/*.jar ./
+     fi
 fi
